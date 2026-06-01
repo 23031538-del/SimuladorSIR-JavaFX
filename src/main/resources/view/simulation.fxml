@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.Simulation"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="controller.SimulationController"
+            prefWidth="1000" prefHeight="700">
 
-</AnchorPane>
+    <top>
+        <ToolBar>
+            <Button text="Iniciar" onAction="#onStart" />
+            <Button text="Pausar" onAction="#onPause" />
+            <Button text="Reiniciar" onAction="#onReset" />
+            <Label fx:id="timeLabel" text="t=0.0" />
+        </ToolBar>
+    </top>
+
+    <center>
+        <SplitPane orientation="HORIZONTAL">
+            <items>
+                <AnchorPane>
+                    <children>
+                        <Canvas fx:id="simCanvas" width="700" height="600" />
+                    </children>
+                </AnchorPane>
+
+                <VBox spacing="8" padding="10">
+                    <TableView fx:id="statsTable" prefWidth="280">
+                        <columns>
+                            <TableColumn text="Estado" fx:id="colEstado" prefWidth="140"/>
+                            <TableColumn text="Cantidad" fx:id="colCantidad" prefWidth="140"/>
+                        </columns>
+                    </TableView>
+
+                    <Label text="Contadores" style="-fx-font-weight:bold;"/>
+                    <Label fx:id="sLabel" text="S: 0" />
+                    <Label fx:id="iLabel" text="I: 0" />
+                    <Label fx:id="rLabel" text="R: 0" />
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>
+
