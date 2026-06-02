@@ -1,28 +1,142 @@
 package controller;
 
-import model.User;
-import service.UserService;
-
-import java.util.Optional;
+import crypto.CifradoStrategy;
+import crypto.CryptoFactory;
+import dao.UsuarioDAO;
+import dao.UsuarioDAOImpl;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import model.Usuario;
 
 public class LoginController {
-    private final UserService userService = new UserService();
 
-    public Optional<User> login(String username, String password) {
+    @FXML
+    private TextField usernameField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Label mensajeLabel;
+
+    private UsuarioDAO usuarioDAO;
+
+    public LoginController() {
+
         try {
-            return userService.authenticate(username, password);
+
+            usuarioDAO = new UsuarioDAOImpl();
+
         } catch (Exception e) {
+
             e.printStackTrace();
-            return Optional.empty();
         }
     }
 
-    public Optional<User> register(String username, String email, String password) {
+    @FXML
+    private void login() {
+
         try {
-            return Optional.of(userService.register(username, email, password));
+
+            String username =
+                    usernameField.getText();
+
+            String password =
+                    passwordField.getText();
+
+            Usuario usuario =
+                    usuarioDAO.buscarPorUsername(
+                            username
+                    );
+
+            if (usuario == null) {
+
+                mensajeLabel.setText(
+                        "Usuario no encontrado"
+                );
+
+                return;
+            }
+
+            CifradoStrategy sha =
+                    CryptoFactory.getStrategy(
+                            "SHA256"
+                    );
+
+            String hash =
+                    sha.cifrar(password);
+
+            if (hash.equals(
+                    usuario.getPasswordHash()
+            )) {
+
+                FXMLLoader loader =
+                        new FXMLLoader(
+                                getClass().getResource(
+                                        "/view/menu.fxml"
+                                )
+                        );
+
+                Scene scene =
+                        new Scene(loader.load());
+
+                MenuController controller =
+                        loader.getController();
+
+                controller.setUsuario(usuario);
+
+                Stage stage =
+                        (Stage) usernameField
+                                .getScene()
+                                .getWindow();
+
+                stage.setScene(scene);
+
+            } else {
+
+                mensajeLabel.setText(
+                        "Contraseña incorrecta"
+                );
+            }
+
         } catch (Exception e) {
+
+            mensajeLabel.setText(
+                    "Error de conexión"
+            );
+        }
+    }
+
+    @FXML
+    private void abrirRegistro() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/view/registro.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            Stage stage =
+                    (Stage) usernameField
+                            .getScene()
+                            .getWindow();
+
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+
             e.printStackTrace();
-            return Optional.empty();
         }
     }
 }

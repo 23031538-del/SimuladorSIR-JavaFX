@@ -1,19 +1,20 @@
 package model;
 
 public class Usuario {
+
     private int idUsuario;
+
     private String username;
-    private String passwordHash; // SHA-256 u otro hash
-    private String claveAES;     // clave AES del usuario (Por si las moscas)
 
-    public Usuario() {
-    }
+    private String passwordHash;
 
-    public Usuario(int idUsuario, String username, String passwordHash, String claveAES) {
+    public Usuario(int idUsuario,
+                   String username,
+                   String passwordHash) {
+
         this.idUsuario = idUsuario;
         this.username = username;
         this.passwordHash = passwordHash;
-        this.claveAES = claveAES;
     }
 
     public int getIdUsuario() {
@@ -38,23 +39,5 @@ public class Usuario {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-    }
-
-    public String getClaveAES() {
-        return claveAES;
-    }
-
-    public void setClaveAES(String claveAES) {
-        this.claveAES = claveAES;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "idUsuario=" + idUsuario +
-                ", username='" + username + '\'' +
-                ", passwordHash='" + (passwordHash != null ? "[PROTECTED]" : null) + '\'' +
-                ", claveAES='" + (claveAES != null ? "[PROTECTED]" : null) + '\'' +
-                '}';
     }
 }
