@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.ConfiguracionController"
+      spacing="10"
+      alignment="CENTER">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Configuración de Simulación"/>
+
+    <TextField fx:id="txtAgentes"
+               promptText="Cantidad de agentes"/>
+
+    <TextField fx:id="txtBeta"
+               promptText="Beta (contagio)"/>
+
+    <TextField fx:id="txtGamma"
+               promptText="Gamma (recuperación)"/>
+
+    <TextField fx:id="txtRadio"
+               promptText="Radio de infección"/>
+
+    <TextField fx:id="txtVelocidad"
+               promptText="Velocidad"/>
+
+    <ComboBox fx:id="cmbEstrategia"/>
+
+    <Button text="Iniciar Simulación"
+            onAction="#iniciarSimulacion"/>
+
+    <Label fx:id="lblMensaje"/>
+
+</VBox>

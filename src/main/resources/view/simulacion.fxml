@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.SimulationController">
+
+    <top>
+
+        <HBox spacing="10"
+              alignment="CENTER">
+
+            <Button text="Iniciar"
+                    onAction="#iniciarSimulacion"/>
+
+            <Label fx:id="susceptiblesLabel"
+                   text="S: 0"/>
+
+            <Label fx:id="infectadosLabel"
+                   text="I: 0"/>
+
+            <Label fx:id="recuperadosLabel"
+                   text="R: 0"/>
+
+        </HBox>
+
+    </top>
+
+    <center>
+
+        <Canvas fx:id="canvas"
+                width="800"
+                height="600"/>
+
+    </center>
+
+    <right>
+
+        <VBox spacing="10">
+
+            <Label text="Historial"/>
+
+            <TableView fx:id="tablaResultados">
+
+                <columns>
+
+                    <TableColumn fx:id="colTiempo"
+                                 text="Tiempo"/>
+
+                    <TableColumn fx:id="colSusceptibles"
+                                 text="S"/>
+
+                    <TableColumn fx:id="colInfectados"
+                                 text="I"/>
+
+                    <TableColumn fx:id="colRecuperados"
+                                 text="R"/>
+
+                </columns>
+
+            </TableView>
+
+        </VBox>
+
+    </right>
+
+</BorderPane>
