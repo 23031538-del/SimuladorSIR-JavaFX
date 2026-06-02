@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+
+    <center>
+
+        <LineChart fx:id="sirChart">
+
+            <xAxis>
+                <NumberAxis label="Tiempo"/>
+            </xAxis>
+
+            <yAxis>
+                <NumberAxis label="Población"/>
+            </yAxis>
+
+        </LineChart>
+
+    </center>
+
+</BorderPane>
