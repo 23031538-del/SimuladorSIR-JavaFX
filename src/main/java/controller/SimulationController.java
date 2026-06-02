@@ -2,6 +2,8 @@ package controller;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -10,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 
+import javafx.stage.Stage;
 import model.Agent;
 import model.Resultado;
 import model.Simulation;
@@ -115,12 +118,7 @@ public class SimulationController {
             @Override
             public void handle(long now) {
 
-                /*
-                 * Cuando implementemos step()
-                 * descomenta esta línea:
-                 *
-                 * simulation.step();
-                 */
+                simulation.step();
 
                 dibujar();
             }
@@ -132,7 +130,37 @@ public class SimulationController {
                 "Simulación iniciada."
         );
     }
+    @FXML
+    private void volverMenu() {
 
+        try {
+
+            if(timer != null) {
+                timer.stop();
+            }
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/view/menu.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            Stage stage =
+                    (Stage) canvas
+                            .getScene()
+                            .getWindow();
+
+            stage.setScene(scene);
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+    }
 
     private void dibujar() {
 

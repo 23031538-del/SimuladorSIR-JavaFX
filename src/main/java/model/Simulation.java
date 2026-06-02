@@ -7,25 +7,26 @@ import strategy.InfectionStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Simulation implements Subject {
 
     private List<Agent> agentes;
-
     private Configuracion configuracion;
-
     private List<Resultado> historial;
-
     private List<Observer> observers;
+
+    private InfectionStrategy strategy;
+
+    private int tiempo = 0;
+
+    private static final double ANCHO = 800;
+    private static final double ALTO = 600;
 
     public Simulation(Configuracion configuracion) {
 
         this.configuracion = configuracion;
 
         agentes = new ArrayList<>();
-
         historial = new ArrayList<>();
-
         observers = new ArrayList<>();
     }
 
@@ -45,21 +46,6 @@ public class Simulation implements Subject {
         agentes.add(agent);
     }
 
-    public int contarSusceptibles() {
-
-        int contador = 0;
-
-        for (Agent a : agentes) {
-            if (a.getEstado() == Estado.SUSCEPTIBLE) {
-                contador++;
-            }
-        }
-
-        return contador;
-    }
-
-    private InfectionStrategy strategy;
-
     public void setStrategy(InfectionStrategy strategy) {
         this.strategy = strategy;
     }
@@ -68,13 +54,107 @@ public class Simulation implements Subject {
         return strategy;
     }
 
+    public void step() {
+
+        moverAgentes();
+
+        if (strategy != null) {
+
+            strategy.infectar(
+                    agentes,
+                    configuracion.getBeta(),
+                    configuracion.getRadioInfeccion(),
+                    1.0
+            );
+        }
+
+        recuperarAgentes();
+
+        tiempo++;
+
+        if (tiempo % 60 == 0) {
+
+            guardarResultado(tiempo / 60);
+        }
+
+        notificarObservers();
+    }
+
+    private void moverAgentes() {
+
+        for (Agent agente : agentes) {
+
+            agente.setX(
+                    agente.getX()
+                            + agente.getVelocidadX()
+            );
+
+            agente.setY(
+                    agente.getY()
+                            + agente.getVelocidadY()
+            );
+
+            if (agente.getX() <= 0 ||
+                    agente.getX() >= ANCHO) {
+
+                agente.setVelocidadX(
+                        -agente.getVelocidadX()
+                );
+            }
+
+            if (agente.getY() <= 0 ||
+                    agente.getY() >= ALTO) {
+
+                agente.setVelocidadY(
+                        -agente.getVelocidadY()
+                );
+            }
+        }
+    }
+
+    private void recuperarAgentes() {
+
+        for (Agent agente : agentes) {
+
+            if (agente.getEstado() == Estado.INFECTADO) {
+
+                agente.setTiempoInfectado(
+                        agente.getTiempoInfectado() + 1
+                );
+
+                if (agente.getTiempoInfectado() >= 300) {
+
+                    agente.setEstado(
+                            Estado.RECUPERADO
+                    );
+                }
+            }
+        }
+    }
+
+    public int contarSusceptibles() {
+
+        int contador = 0;
+
+        for (Agent a : agentes) {
+
+            if (a.getEstado() == Estado.SUSCEPTIBLE) {
+
+                contador++;
+            }
+        }
+
+        return contador;
+    }
 
     public int contarInfectados() {
 
         int contador = 0;
 
         for (Agent a : agentes) {
+
             if (a.getEstado() == Estado.INFECTADO) {
+
                 contador++;
             }
         }
@@ -87,7 +167,9 @@ public class Simulation implements Subject {
         int contador = 0;
 
         for (Agent a : agentes) {
+
             if (a.getEstado() == Estado.RECUPERADO) {
+
                 contador++;
             }
         }
@@ -97,26 +179,23 @@ public class Simulation implements Subject {
 
     public void guardarResultado(int tiempo) {
 
-        Resultado resultado = new Resultado(
-                tiempo,
-                contarSusceptibles(),
-                contarInfectados(),
-                contarRecuperados()
+        historial.add(
+                new Resultado(
+                        tiempo,
+                        contarSusceptibles(),
+                        contarInfectados(),
+                        contarRecuperados()
+                )
         );
-
-        historial.add(resultado);
     }
-    @Override
-    public void agregarObserver(
-            Observer observer) {
 
+    @Override
+    public void agregarObserver(Observer observer) {
         observers.add(observer);
     }
 
     @Override
-    public void eliminarObserver(
-            Observer observer) {
-
+    public void eliminarObserver(Observer observer) {
         observers.remove(observer);
     }
 
@@ -124,8 +203,8 @@ public class Simulation implements Subject {
     public void notificarObservers() {
 
         for (Observer observer : observers) {
+
             observer.actualizar();
         }
     }
-
 }
