@@ -3,7 +3,8 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.EstadisticasController">
 
     <center>
 

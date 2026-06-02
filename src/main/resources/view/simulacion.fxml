@@ -17,6 +17,10 @@
             <Button text="Iniciar"
                     onAction="#iniciarSimulacion"/>
 
+            <Button text="Volver"
+                    onAction="#volverMenu"/>
+
+
             <Label fx:id="susceptiblesLabel"
                    text="S: 0"/>
 

@@ -69,12 +69,10 @@ public class MenuController {
 
         try {
 
-            System.out.println("Abriendo estadísticas");
-
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
-                                    "/view/estadisticas.fxml"
+                                    "/view/simulacion.fxml"
                             )
                     );
 
@@ -88,12 +86,10 @@ public class MenuController {
 
             stage.setScene(scene);
 
-            System.out.println("Estadísticas abiertas");
-
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-
     }
+
 }

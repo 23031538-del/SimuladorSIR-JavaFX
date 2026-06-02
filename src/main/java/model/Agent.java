@@ -12,9 +12,12 @@ public class Agent {
 
     private double tiempoInfectado;
 
-    public Agent(double x, double y,
-                 double velocidadX, double velocidadY,
-                 Estado estado) {
+    public Agent(
+            double x,
+            double y,
+            double velocidadX,
+            double velocidadY,
+            Estado estado) {
 
         this.x = x;
         this.y = y;
